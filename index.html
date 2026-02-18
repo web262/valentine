@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shivam ❤ Anjali — Valentine Proposal</title>
+  <style>
+    :root{
+      --bg1:#ff5c8a;
+      --bg2:#ffb3c7;
+      --bg3:#7c4dff;
+      --card:rgba(255,255,255,.18);
+      --card2:rgba(255,255,255,.10);
+      --text:#ffffff;
+      --muted:rgba(255,255,255,.82);
+      --line:rgba(255,255,255,.22);
+      --shadow: 0 18px 60px rgba(0,0,0,.25);
+      --good:#32d583;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color:var(--text);
+      overflow:hidden;
+      background:
+        radial-gradient(1200px 800px at 15% 10%, rgba(124,77,255,.55), transparent 60%),
+        radial-gradient(900px 650px at 90% 25%, rgba(255,92,138,.75), transparent 55%),
+        radial-gradient(1000px 650px at 50% 110%, rgba(255,179,199,.70), transparent 55%),
+        linear-gradient(135deg, #2b0a3d 0%, #3b0f4f 35%, #4a114e 65%, #2b0a3d 100%);
+    }
+
+    /* Floating hearts */
+    .hearts{position:fixed; inset:0; pointer-events:none; overflow:hidden;}
+    .heart{
+      position:absolute;
+      width:18px; height:18px;
+      transform: rotate(45deg);
+      opacity:.85;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.22));
+      animation: floatUp var(--dur) linear infinite;
+    }
+    .heart:before,.heart:after{content:""; position:absolute; width:18px; height:18px; background: var(--c); border-radius: 50%;}
+    .heart{background: var(--c); border-radius: 4px;}
+    .heart:before{left:-9px; top:0}
+    .heart:after{left:0; top:-9px}
+    @keyframes floatUp{
+      from{ transform: translateY(20vh) translateX(0) rotate(45deg) scale(var(--s)); }
+      to{ transform: translateY(-120vh) translateX(var(--x)) rotate(45deg) scale(var(--s)); }
+    }
+
+    .wrap{position:relative; height:100%; display:grid; place-items:center; padding:22px;}
+
+    .card{
+      width:min(980px, 100%);
+      background: linear-gradient(180deg, var(--card), var(--card2));
+      border:1px solid var(--line);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      overflow:hidden;
+    }
+
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      gap:10px;
+    }
+    .brand{display:flex; align-items:center; gap:10px; font-weight:900; letter-spacing:-.02em;}
+    .chip{font-size:12px; padding: 6px 10px; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; background: rgba(0,0,0,.10); color: var(--muted); white-space:nowrap;}
+
+    .content{display:grid; grid-template-columns: 1.05fr .95fr; gap: 18px; padding: 18px;}
+
+    .panel{
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 22px;
+      padding: 18px;
+      background: rgba(0,0,0,.10);
+      position:relative;
+      overflow:hidden;
+      min-height: 420px;
+    }
+    .panel:before{
+      content:"";
+      position:absolute;
+      width: 420px; height: 420px;
+      right:-240px; top:-260px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,92,138,.55), transparent 60%);
+      opacity:.95;
+      pointer-events:none;
+    }
+
+    h1{margin: 6px 0 10px; font-size: clamp(26px, 3.7vw, 44px); line-height:1.05; letter-spacing:-.03em; position:relative; z-index:1;}
+    .sub{margin:0 0 14px; color: var(--muted); line-height:1.6; font-size: 15px; max-width: 60ch; position:relative; z-index:1;}
+
+    .bubble{
+      display:inline-flex; align-items:center; gap:10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px dashed rgba(255,255,255,.35);
+      background: rgba(255,255,255,.08);
+      color: var(--muted);
+      font-size: 13px;
+      width: fit-content;
+      position:relative; z-index:1;
+    }
+
+    /* Quiz */
+    .quiz{display:grid; gap:12px; margin-top:12px; position:relative; z-index:1;}
+    .qcard{
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+    }
+    .qcard b{display:block; margin-bottom:8px;}
+    .opts{display:flex; gap:10px; flex-wrap:wrap;}
+
+    .opt{
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-weight: 800;
+      cursor:pointer;
+      transition: transform .14s ease, background .14s ease;
+      user-select:none;
+      font-size: 13px;
+    }
+    .opt:hover{transform: translateY(-1px); background: rgba(255,255,255,.10)}
+    .opt.good{border-color: rgba(50,213,131,.35); background: rgba(50,213,131,.18)}
+    .opt.spicy{border-color: rgba(255,179,199,.40); background: rgba(255,179,199,.18)}
+
+    .reaction{
+      margin-top:10px;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.90);
+      font-size: 13px;
+      line-height:1.55;
+      min-height: 52px;
+    }
+
+    .progress{
+      display:flex; align-items:center; justify-content:space-between;
+      margin-top:12px;
+      gap:10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .bar{
+      flex:1;
+      height:10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      overflow:hidden;
+    }
+    .bar > i{
+      display:block;
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(50,213,131,.85), rgba(255,92,138,.85));
+      border-radius:999px;
+      transition: width .22s ease;
+    }
+
+    /* Proposal panel */
+    .proposal{display:grid; place-items:center; text-align:center; padding: 16px; gap: 12px; position:relative;}
+
+    .ring{
+      width: 118px; height: 118px;
+      border-radius: 999px;
+      border: 2px solid rgba(255,255,255,.30);
+      display:grid; place-items:center;
+      background: rgba(0,0,0,.10);
+      box-shadow: 0 14px 40px rgba(0,0,0,.18);
+      position:relative;
+      overflow:hidden;
+    }
+    .ring:before{
+      content:"";
+      position:absolute; inset:-30px;
+      background: conic-gradient(from 0deg, rgba(255,92,138,.85), rgba(124,77,255,.75), rgba(255,179,199,.85), rgba(255,92,138,.85));
+      filter: blur(10px);
+      animation: spin 5s linear infinite;
+      opacity:.95;
+    }
+    .ring span{position:relative; font-size: 42px; filter: drop-shadow(0 10px 20px rgba(0,0,0,.22));}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .ask{font-size: clamp(22px, 3vw, 32px); margin:0; letter-spacing:-.02em;}
+    .hint{margin:0; color:var(--muted); font-size:13px; line-height:1.5}
+
+    /* The "button arena" fixes overlap on all screens */
+    .arena{
+      width:100%;
+      max-width: 420px;
+      height: 170px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.12);
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      place-items:center;
+    }
+
+    .btn{
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.10);
+      color: var(--text);
+      padding: 12px 18px;
+      border-radius: 18px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform .14s ease, background .14s ease, box-shadow .14s ease;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.16)}
+
+    .btn.yes{
+      border: 1px solid rgba(50,213,131,.40);
+      background: linear-gradient(135deg, rgba(50,213,131,.60), rgba(50,213,131,.28));
+      box-shadow: 0 12px 28px rgba(50,213,131,.18);
+      z-index: 3;
+      position:absolute;
+      left: 50%;
+      bottom: 14px;
+      transform: translateX(-50%);
+    }
+
+    .btn.no{
+      position:absolute;
+      left: 52%;
+      top: 14px;
+      transform: translateX(-50%);
+      z-index: 2;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.22);
+    }
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,.48);
+      border: 1px solid rgba(255,255,255,.18);
+      padding: 10px 12px;
+      border-radius: 999px;
+      color: rgba(255,255,255,.92);
+      font-size: 13px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.35);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .2s ease, transform .2s ease;
+      z-index: 9999;
+    }
+    .toast.show{opacity:1; transform: translateX(-50%) translateY(-2px)}
+
+    .final{display:none; padding: 18px; text-align:center; width:100%;}
+    .final h2{margin:0 0 8px; font-size: 30px; letter-spacing:-.02em}
+    .final p{margin:0 0 14px; color:var(--muted); line-height:1.6}
+    .big{font-size: 62px; line-height:1; margin: 10px 0 0; filter: drop-shadow(0 16px 30px rgba(0,0,0,.25));}
+
+    .footer{
+      padding: 12px 18px 16px;
+      border-top: 1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      color: rgba(255,255,255,.72);
+      font-size: 12px;
+    }
+
+    @media (max-width: 880px){
+      body{overflow:auto}
+      .content{grid-template-columns: 1fr;}
+      .panel{min-height:auto}
+      .arena{max-width: 520px; height: 170px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts" id="hearts" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <div class="card" role="application" aria-label="Valentine proposal">
+      <div class="topbar">
+        <div class="brand">💘 Shivam <span style="opacity:.8">×</span> Anjali</div>
+        <div class="chip" id="chip">Mode: Cute Romantic Chaos</div>
+      </div>
+
+      <div class="content">
+        <!-- Left: Funny Love Quiz -->
+        <div class="panel">
+          <div class="bubble">🧪 Cute Love Lab: “100% scientific” quiz</div>
+          <h1>Anjali, quick questions before my BIG question…</h1>
+          <p class="sub">
+            This test is designed by <b>Shivam</b>, reviewed by <b>Google</b> (I searched “how to impress Anjali”)
+            and approved by the <b>Department of Cute Decisions</b>.
+          </p>
+
+          <div class="quiz" id="quiz">
+            <div class="qcard">
+              <b id="qText">Loading question…</b>
+              <div class="opts" id="opts"></div>
+              <div class="reaction" id="reaction">Pick an option 😌</div>
+
+              <div class="progress">
+                <span id="step">Q 1/6</span>
+                <div class="bar" aria-label="progress"><i id="barFill"></i></div>
+                <span id="score">❤️ 0</span>
+              </div>
+            </div>
+
+            <div class="qcard" style="background: rgba(0,0,0,.12)">
+              <b>Bonus Rules</b>
+              <div style="color:var(--muted); font-size:13px; line-height:1.55">
+                • If you pick cute answers, the love score goes up. <br/>
+                • If you pick spicy answers, Shivam blushes. <br/>
+                • If you pick “No”… the NO button later becomes… problematic 😈
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Proposal -->
+        <div class="panel proposal" id="stage">
+          <div class="ring" aria-hidden="true"><span>💍</span></div>
+          <p class="ask" id="ask">Final question is locked 🔒</p>
+          <p class="hint" id="hint">Finish the quiz to unlock it ✨</p>
+
+          <div class="arena" id="arena" aria-label="button arena">
+            <button class="btn yes" id="yesBtn" disabled style="opacity:.55; cursor:not-allowed">YES 💖</button>
+            <button class="btn no" id="noBtn" disabled style="opacity:.45; cursor:not-allowed">NO 🙃</button>
+          </div>
+
+          <div class="final" id="final">
+            <div class="big">🥰</div>
+            <h2>YAYYY! It’s official 💖</h2>
+            <p>
+              Anjali said YES! Shivam is now <b>100%</b> happier and <b>0%</b> calm.
+              <br/>Now tell me when we’re getting ice cream. 🍦
+            </p>
+            <button class="btn yes" id="confettiBtn" style="position:static; transform:none">Do the celebration again 🎉</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <span>Made with 💗 by Shivam</span>
+        <span>Tip: The NO button becomes "faster" if you choose sassy answers 😈</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Nope 😌 Try again!</div>
+
+  <script>
+    // ========= Floating hearts background =========
+    const hearts = document.getElementById('hearts');
+    const colors = ['#ff5c8a', '#ffb3c7', '#ffd166', '#7c4dff', '#6ae4ff'];
+    const makeHeart = () => {
+      const h = document.createElement('div');
+      h.className = 'heart';
+      const c = colors[Math.floor(Math.random()*colors.length)];
+      const left = Math.random()*100;
+      const dur = 7 + Math.random()*8;
+      const s = 0.55 + Math.random()*1.1;
+      const x = (Math.random()*40 - 20) + 'vw';
+      h.style.left = left + 'vw';
+      h.style.bottom = (-10 - Math.random()*30) + 'vh';
+      h.style.setProperty('--c', c);
+      h.style.setProperty('--dur', dur + 's');
+      h.style.setProperty('--s', s);
+      h.style.setProperty('--x', x);
+      hearts.appendChild(h);
+      setTimeout(()=>h.remove(), dur*1000);
+    };
+    for (let i=0;i<18;i++) setTimeout(makeHeart, i*350);
+    setInterval(makeHeart, 650);
+
+    // ========= Toast =========
+    const toast = document.getElementById('toast');
+    function showToast(msg){
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(()=>toast.classList.remove('show'), 950);
+    }
+
+    // ========= Quiz engine =========
+    const qText = document.getElementById('qText');
+    const opts = document.getElementById('opts');
+    const reaction = document.getElementById('reaction');
+    const step = document.getElementById('step');
+    const barFill = document.getElementById('barFill');
+    const scoreEl = document.getElementById('score');
+    const chip = document.getElementById('chip');
+
+    const ask = document.getElementById('ask');
+    const hint = document.getElementById('hint');
+    const arena = document.getElementById('arena');
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const final = document.getElementById('final');
+    const confettiBtn = document.getElementById('confettiBtn');
+
+    const QUESTIONS = [
+      {
+        q: '1) If Shivam says “I miss you”… what do you do?',
+        options: [
+          {t:'Send a cute selfie 😌', kind:'good', r:'Awww. Shivam.exe has stopped functioning (too cute). +2 ❤️', add:2},
+          {t:'Say “Same” and run away 🏃‍♀️', kind:'spicy', r:'Sassy detected. Shivam is now chasing with chocolates. +1 ❤️', add:1},
+          {t:'Ignore 🤨', kind:'', r:'Error. Internet connection between hearts is unstable. Please retry. +0 ❤️', add:0}
+        ]
+      },
+      {
+        q: '2) Pick our perfect date:',
+        options: [
+          {t:'Ice cream + long walk 🍦', kind:'good', r:'Classic romance. Also, ice cream is mandatory. +2 ❤️', add:2},
+          {t:'Netflix + snacks + cuddle 🌙', kind:'good', r:'Cuddle mode unlocked. Shivam is smiling for 3 business days. +2 ❤️', add:2},
+          {t:'I’ll choose… you choose 😈', kind:'spicy', r:'Plot twist! Anjali is the boss. Shivam accepts. +1 ❤️', add:1}
+        ]
+      },
+      {
+        q: '3) How would you rate Shivam’s jokes?',
+        options: [
+          {t:'So bad… it’s cute 😂', kind:'good', r:'Correct answer. Bad jokes are my love language. +2 ❤️', add:2},
+          {t:'10/10, comedian material 😎', kind:'spicy', r:'Flattery detected. Shivam is now flying. +1 ❤️', add:1},
+          {t:'Please stop 😭', kind:'', r:'Ouch. I’ll reduce jokes to only 47 per day. +0 ❤️', add:0}
+        ]
+      },
+      {
+        q: '4) Would you hold my hand in public?',
+        options: [
+          {t:'Yes, obviously 🤝', kind:'good', r:'Hand-holding: confirmed. Shivam’s heart: melted. +2 ❤️', add:2},
+          {t:'Only if you behave 😌', kind:'spicy', r:'Deal. I will behave… for 3 minutes. +1 ❤️', add:1},
+          {t:'Maybe… if bribed 🍫', kind:'good', r:'Chocolate bribe accepted. +2 ❤️', add:2}
+        ]
+      },
+      {
+        q: '5) If I get angry, what’s your solution?',
+        options: [
+          {t:'Say sorry + hug 🫂', kind:'good', r:'Perfect. Hug resolves 99% errors. +2 ❤️', add:2},
+          {t:'Feed him snacks 🍟', kind:'good', r:'YES. Hungry Shivam is dangerous. +2 ❤️', add:2},
+          {t:'Roast him until he laughs 😈', kind:'spicy', r:'Anjali chose violence (cute). +1 ❤️', add:1}
+        ]
+      },
+      {
+        q: '6) Final warm-up: Do you like Shivam?',
+        options: [
+          {t:'Yes ❤️', kind:'good', r:'Correct. Universe approved. +3 ❤️', add:3},
+          {t:'A LOT 😭💘', kind:'good', r:'Shivam is now a happy idiot. +4 ❤️', add:4},
+          {t:'No 🙃', kind:'spicy', r:'Interesting choice… the NO button later will now become… EXTRA dramatic. +0 ❤️', add:0, noBoost:true}
+        ]
+      }
+    ];
+
+    let idx = 0;
+    let score = 0;
+    let dodgeLevel = 1; // for NO button
+
+    function render(){
+      const total = QUESTIONS.length;
+      step.textContent = `Q ${idx+1}/${total}`;
+      barFill.style.width = `${Math.round((idx/total)*100)}%`;
+      scoreEl.textContent = `❤️ ${score}`;
+
+      const item = QUESTIONS[idx];
+      qText.textContent = item.q;
+      opts.innerHTML = '';
+
+      item.options.forEach((o) => {
+        const b = document.createElement('button');
+        b.className = `opt ${o.kind||''}`;
+        b.textContent = o.t;
+        b.onclick = () => pick(o);
+        opts.appendChild(b);
+      });
+
+      reaction.textContent = 'Pick an option 😌';
+    }
+
+    function pick(o){
+      score += o.add || 0;
+      scoreEl.textContent = `❤️ ${score}`;
+      reaction.textContent = o.r;
+
+      if (o.noBoost) {
+        dodgeLevel = Math.min(5, dodgeLevel + 2);
+        chip.textContent = `Mode: NO button is now faster (Level ${dodgeLevel})`;
+      } else {
+        // mild escalation
+        if (Math.random() < 0.25) dodgeLevel = Math.min(5, dodgeLevel + 1);
+        chip.textContent = `Mode: Cute Romantic Chaos (NO Level ${dodgeLevel})`;
+      }
+
+      // Next question after short delay
+      setTimeout(() => {
+        idx += 1;
+        const total = QUESTIONS.length;
+        barFill.style.width = `${Math.round((idx/total)*100)}%`;
+
+        if (idx >= total) {
+          unlockFinal();
+        } else {
+          render();
+        }
+      }, 820);
+    }
+
+    function unlockFinal(){
+      qText.textContent = '✅ Quiz complete!';
+      opts.innerHTML = '';
+      reaction.textContent = `Love score = ${score}. Shivam is officially in love (as if he wasn’t already).`; 
+      barFill.style.width = '100%';
+
+      ask.textContent = 'Will you be my Valentine, Anjali?';
+      hint.textContent = 'Now you can choose… but can you really choose NO? 😈';
+
+      yesBtn.disabled = false;
+      noBtn.disabled = false;
+      yesBtn.style.opacity = '1';
+      yesBtn.style.cursor = 'pointer';
+      noBtn.style.opacity = '1';
+      noBtn.style.cursor = 'pointer';
+
+      // place NO button inside arena
+      placeNoButton(true);
+      showToast('Final question unlocked 💖');
+    }
+
+    render();
+
+    // ========= No button “escape” logic (fixed layout) =========
+    let lastMove = 0;
+    function rand(min,max){return Math.random()*(max-min)+min}
+
+    function placeNoButton(force=false){
+      if (noBtn.disabled) return;
+      const now = Date.now();
+      if (!force && now - lastMove < 85) return;
+      lastMove = now;
+
+      const rect = arena.getBoundingClientRect();
+      const bw = noBtn.offsetWidth;
+      const bh = noBtn.offsetHeight;
+
+      const pad = 10;
+      const maxX = rect.width - bw - pad;
+      const maxY = rect.height - bh - pad - 54; // keep away from YES area
+
+      const x = rand(pad, Math.max(pad, maxX));
+      const y = rand(pad, Math.max(pad, maxY));
+
+      // position relative to arena
+      noBtn.style.left = x + 'px';
+      noBtn.style.top  = y + 'px';
+      noBtn.style.transform = `rotate(${rand(-10,10)}deg)`;
+    }
+
+    function escalate(){
+      dodgeLevel = Math.min(5, dodgeLevel + 1);
+      const lines = [
+        'NO button: “I’m shy 🙈”',
+        'NO button: “Catch me if you can 😼”',
+        'NO button: “I have plans… elsewhere 🏃‍♂️💨”',
+        'NO button: “Error 404: NO not found 😌”',
+        'NO button: “Stop chasing me, choose YES 😭”'
+      ];
+      hint.textContent = lines[dodgeLevel-1];
+    }
+
+    const dodge = (e) => {
+      if (noBtn.disabled) return;
+      placeNoButton();
+      if (Math.random() < (0.25 + dodgeLevel*0.08)) escalate();
+      if (dodgeLevel >= 4 && Math.random() < 0.30) {
+        showToast('NOpe. This button is in a relationship with chaos 😈');
+      }
+      e.preventDefault?.();
+    };
+
+    noBtn.addEventListener('mouseenter', dodge);
+    noBtn.addEventListener('mousemove', () => {
+      if (noBtn.disabled) return;
+      if (dodgeLevel >= 3) placeNoButton();
+    });
+
+    noBtn.addEventListener('touchstart', (e) => {
+      dodge(e);
+      showToast('Nice try 😌');
+    }, {passive:false});
+
+    noBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      placeNoButton(true);
+      showToast('Not today 😌');
+      escalate();
+    });
+
+    // ========= YES flow + confetti =========
+    function confettiBurst(){
+      const count = 80;
+      for (let i=0;i<count;i++){
+        const p = document.createElement('div');
+        p.textContent = ['💖','✨','🎉','💘','🌸','🍫','🧸'][Math.floor(Math.random()*7)];
+        p.style.position = 'fixed';
+        p.style.left = (Math.random()*100) + 'vw';
+        p.style.top = (-10) + 'vh';
+        p.style.fontSize = (14 + Math.random()*22) + 'px';
+        p.style.zIndex = 9999;
+        p.style.transition = 'transform 1.3s ease, opacity 1.3s ease';
+        p.style.opacity = '1';
+        document.body.appendChild(p);
+        const tx = (Math.random()*60 - 30) + 'vw';
+        const ty = (Math.random()*90 + 60) + 'vh';
+        const rot = (Math.random()*720 - 360);
+        setTimeout(()=>{
+          p.style.transform = `translate(${tx}, ${ty}) rotate(${rot}deg)`;
+          p.style.opacity = '0';
+        }, 10);
+        setTimeout(()=>p.remove(), 1400);
+      }
+    }
+
+    yesBtn.addEventListener('click', () => {
+      if (yesBtn.disabled) return;
+      arena.style.display = 'none';
+      final.style.display = 'block';
+      chip.textContent = 'Status: Valentine Accepted ✅';
+      confettiBurst();
+      showToast('She said YES 💖');
+    });
+
+    confettiBtn.addEventListener('click', () => {
+      confettiBurst();
+      showToast('Celebration mode: ON 🎉');
+    });
+
+    // If window resizes, keep NO inside arena
+    window.addEventListener('resize', () => placeNoButton(true));
+  </script>
+</body>
+</html>
