@@ -3,19 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Shivam ❤ Anjali — Valentine Proposal</title>
+  <title>Shivam ❤ Anjali — AI Valentine Bot</title>
   <style>
     :root{
-      --bg1:#ff5c8a;
-      --bg2:#ffb3c7;
-      --bg3:#7c4dff;
-      --card:rgba(255,255,255,.18);
-      --card2:rgba(255,255,255,.10);
+      --bgA:#12051e;
+      --bgB:#2b0a3d;
+      --pink:#ff4d88;
+      --rose:#ff9bbd;
+      --violet:#7c4dff;
+      --mint:#32d583;
+      --cyan:#6ae4ff;
+      --card:rgba(255,255,255,.12);
+      --card2:rgba(255,255,255,.07);
+      --line:rgba(255,255,255,.18);
       --text:#ffffff;
       --muted:rgba(255,255,255,.82);
-      --line:rgba(255,255,255,.22);
-      --shadow: 0 18px 60px rgba(0,0,0,.25);
-      --good:#32d583;
+      --shadow: 0 22px 70px rgba(0,0,0,.35);
     }
 
     *{box-sizing:border-box}
@@ -24,227 +27,342 @@
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
       color:var(--text);
-      overflow:hidden;
       background:
-        radial-gradient(1200px 800px at 15% 10%, rgba(124,77,255,.55), transparent 60%),
-        radial-gradient(900px 650px at 90% 25%, rgba(255,92,138,.75), transparent 55%),
-        radial-gradient(1000px 650px at 50% 110%, rgba(255,179,199,.70), transparent 55%),
-        linear-gradient(135deg, #2b0a3d 0%, #3b0f4f 35%, #4a114e 65%, #2b0a3d 100%);
+        radial-gradient(900px 650px at 15% 15%, rgba(124,77,255,.45), transparent 60%),
+        radial-gradient(900px 650px at 85% 25%, rgba(255,77,136,.55), transparent 55%),
+        radial-gradient(1000px 700px at 50% 110%, rgba(255,155,189,.35), transparent 55%),
+        linear-gradient(135deg, var(--bgA), var(--bgB));
+      overflow:hidden;
     }
 
-    /* Floating hearts */
-    .hearts{position:fixed; inset:0; pointer-events:none; overflow:hidden;}
+    /* ===== Floating hearts & sparkles ===== */
+    .fx{position:fixed; inset:0; pointer-events:none; overflow:hidden;}
     .heart{
       position:absolute;
-      width:18px; height:18px;
+      width:16px; height:16px;
       transform: rotate(45deg);
       opacity:.85;
-      filter: drop-shadow(0 10px 18px rgba(0,0,0,.22));
       animation: floatUp var(--dur) linear infinite;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.25));
     }
-    .heart:before,.heart:after{content:""; position:absolute; width:18px; height:18px; background: var(--c); border-radius: 50%;}
+    .heart:before,.heart:after{content:""; position:absolute; width:16px; height:16px; background: var(--c); border-radius:50%;}
     .heart{background: var(--c); border-radius: 4px;}
-    .heart:before{left:-9px; top:0}
-    .heart:after{left:0; top:-9px}
+    .heart:before{left:-8px; top:0}
+    .heart:after{left:0; top:-8px}
+
+    .spark{
+      position:absolute;
+      font-size: 14px;
+      opacity:.9;
+      animation: twinkle var(--dur) ease-in-out infinite;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.22));
+    }
+
     @keyframes floatUp{
       from{ transform: translateY(20vh) translateX(0) rotate(45deg) scale(var(--s)); }
       to{ transform: translateY(-120vh) translateX(var(--x)) rotate(45deg) scale(var(--s)); }
     }
+    @keyframes twinkle{
+      0%,100%{transform: translateY(0) scale(1); opacity:.35}
+      50%{transform: translateY(-8px) scale(1.15); opacity:.95}
+    }
 
-    .wrap{position:relative; height:100%; display:grid; place-items:center; padding:22px;}
-
-    .card{
-      width:min(980px, 100%);
-      background: linear-gradient(180deg, var(--card), var(--card2));
-      border:1px solid var(--line);
+    /* ===== Layout ===== */
+    .wrap{height:100%; display:grid; place-items:center; padding:18px;}
+    .app{
+      width:min(1100px, 100%);
+      height:min(760px, 92vh);
+      background: linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.06));
+      border: 1px solid var(--line);
       border-radius: 26px;
       box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
       overflow:hidden;
+      display:grid;
+      grid-template-rows: auto 1fr auto;
     }
 
-    .topbar{
-      display:flex; align-items:center; justify-content:space-between;
-      padding: 16px 18px;
+    .top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 14px 16px;
       border-bottom: 1px solid var(--line);
-      gap:10px;
-    }
-    .brand{display:flex; align-items:center; gap:10px; font-weight:900; letter-spacing:-.02em;}
-    .chip{font-size:12px; padding: 6px 10px; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; background: rgba(0,0,0,.10); color: var(--muted); white-space:nowrap;}
-
-    .content{display:grid; grid-template-columns: 1.05fr .95fr; gap: 18px; padding: 18px;}
-
-    .panel{
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 22px;
-      padding: 18px;
       background: rgba(0,0,0,.10);
+    }
+
+    .brand{display:flex; align-items:center; gap:10px; font-weight:900; letter-spacing:-.02em;}
+    .pill{font-size:12px; padding:6px 10px; border:1px solid rgba(255,255,255,.18); border-radius:999px; color:var(--muted); background: rgba(0,0,0,.12); white-space:nowrap;}
+
+    .main{
+      display:grid;
+      grid-template-columns: 340px 1fr;
+      height:100%;
+      min-height:0;
+    }
+
+    /* ===== Left: Profiles + progress ===== */
+    .side{
+      border-right: 1px solid var(--line);
+      padding: 14px;
+      background: rgba(0,0,0,.08);
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      min-height:0;
+    }
+
+    .profile{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      padding: 12px;
+      border-radius: 20px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+    }
+
+    .avatar{
+      width:54px; height:54px;
+      border-radius: 18px;
+      display:grid; place-items:center;
       position:relative;
       overflow:hidden;
-      min-height: 420px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.14);
+      box-shadow: 0 10px 26px rgba(0,0,0,.22);
     }
-    .panel:before{
+    .avatar:before{
       content:"";
       position:absolute;
-      width: 420px; height: 420px;
-      right:-240px; top:-260px;
-      background: radial-gradient(circle at 30% 30%, rgba(255,92,138,.55), transparent 60%);
-      opacity:.95;
-      pointer-events:none;
+      inset:-26px;
+      background: conic-gradient(from 0deg, rgba(255,77,136,.85), rgba(124,77,255,.75), rgba(106,228,255,.70), rgba(255,155,189,.85), rgba(255,77,136,.85));
+      filter: blur(12px);
+      opacity:.75;
+      animation: spin 7s linear infinite;
     }
-
-    h1{margin: 6px 0 10px; font-size: clamp(26px, 3.7vw, 44px); line-height:1.05; letter-spacing:-.03em; position:relative; z-index:1;}
-    .sub{margin:0 0 14px; color: var(--muted); line-height:1.6; font-size: 15px; max-width: 60ch; position:relative; z-index:1;}
-
-    .bubble{
-      display:inline-flex; align-items:center; gap:10px;
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px dashed rgba(255,255,255,.35);
-      background: rgba(255,255,255,.08);
-      color: var(--muted);
-      font-size: 13px;
-      width: fit-content;
-      position:relative; z-index:1;
-    }
-
-    /* Quiz */
-    .quiz{display:grid; gap:12px; margin-top:12px; position:relative; z-index:1;}
-    .qcard{
-      padding: 14px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.06);
-    }
-    .qcard b{display:block; margin-bottom:8px;}
-    .opts{display:flex; gap:10px; flex-wrap:wrap;}
-
-    .opt{
-      border: 1px solid rgba(255,255,255,.22);
-      background: rgba(0,0,0,.18);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 999px;
-      font-weight: 800;
-      cursor:pointer;
-      transition: transform .14s ease, background .14s ease;
-      user-select:none;
-      font-size: 13px;
-    }
-    .opt:hover{transform: translateY(-1px); background: rgba(255,255,255,.10)}
-    .opt.good{border-color: rgba(50,213,131,.35); background: rgba(50,213,131,.18)}
-    .opt.spicy{border-color: rgba(255,179,199,.40); background: rgba(255,179,199,.18)}
-
-    .reaction{
-      margin-top:10px;
-      padding: 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.18);
-      color: rgba(255,255,255,.90);
-      font-size: 13px;
-      line-height:1.55;
-      min-height: 52px;
-    }
-
-    .progress{
-      display:flex; align-items:center; justify-content:space-between;
-      margin-top:12px;
-      gap:10px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-    .bar{
-      flex:1;
-      height:10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.06);
-      overflow:hidden;
-    }
-    .bar > i{
-      display:block;
-      height:100%;
-      width:0%;
-      background: linear-gradient(90deg, rgba(50,213,131,.85), rgba(255,92,138,.85));
-      border-radius:999px;
-      transition: width .22s ease;
-    }
-
-    /* Proposal panel */
-    .proposal{display:grid; place-items:center; text-align:center; padding: 16px; gap: 12px; position:relative;}
-
-    .ring{
-      width: 118px; height: 118px;
-      border-radius: 999px;
-      border: 2px solid rgba(255,255,255,.30);
-      display:grid; place-items:center;
-      background: rgba(0,0,0,.10);
-      box-shadow: 0 14px 40px rgba(0,0,0,.18);
-      position:relative;
-      overflow:hidden;
-    }
-    .ring:before{
-      content:"";
-      position:absolute; inset:-30px;
-      background: conic-gradient(from 0deg, rgba(255,92,138,.85), rgba(124,77,255,.75), rgba(255,179,199,.85), rgba(255,92,138,.85));
-      filter: blur(10px);
-      animation: spin 5s linear infinite;
-      opacity:.95;
-    }
-    .ring span{position:relative; font-size: 42px; filter: drop-shadow(0 10px 20px rgba(0,0,0,.22));}
+    .avatar > span{position:relative; font-size:28px; filter: drop-shadow(0 10px 18px rgba(0,0,0,.20));}
     @keyframes spin{to{transform:rotate(360deg)}}
 
-    .ask{font-size: clamp(22px, 3vw, 32px); margin:0; letter-spacing:-.02em;}
-    .hint{margin:0; color:var(--muted); font-size:13px; line-height:1.5}
+    .meta{min-width:0}
+    .meta .name{font-weight:900; letter-spacing:-.01em}
+    .meta .desc{color:var(--muted); font-size:12px; line-height:1.45}
 
-    /* The "button arena" fixes overlap on all screens */
-    .arena{
-      width:100%;
-      max-width: 420px;
-      height: 170px;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.12);
-      position:relative;
-      overflow:hidden;
-      display:grid;
-      place-items:center;
+    .cards{display:grid; gap:10px; overflow:auto; padding-right:4px;}
+    .stat{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      border-radius: 18px;
+      padding: 12px;
     }
+    .stat b{display:block; margin-bottom:6px}
+    .stat .small{color:var(--muted); font-size:12px; line-height:1.5}
+
+    .meter{margin-top:10px; display:flex; align-items:center; gap:10px;}
+    .bar{flex:1; height:12px; border-radius:999px; border:1px solid rgba(255,255,255,.16); background: rgba(0,0,0,.16); overflow:hidden;}
+    .bar i{display:block; height:100%; width:0%; background: linear-gradient(90deg, rgba(50,213,131,.9), rgba(255,77,136,.9)); border-radius:999px; transition: width .25s ease;}
+    .score{font-weight:900; white-space:nowrap}
+
+    .side-actions{display:flex; gap:10px; flex-wrap:wrap}
+    .ghost{
+      padding:10px 12px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.12);
+      color: rgba(255,255,255,.92);
+      cursor:pointer;
+      font-weight:800;
+      transition: transform .12s ease, background .12s ease;
+      user-select:none;
+    }
+    .ghost:hover{transform: translateY(-1px); background: rgba(255,255,255,.08)}
+
+    /* ===== Right: Chat ===== */
+    .chat{
+      display:grid;
+      grid-template-rows: auto 1fr auto;
+      min-height:0;
+    }
+
+    .chat-head{
+      padding: 12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(0,0,0,.08);
+    }
+
+    .botline{display:flex; align-items:center; gap:10px;}
+    .botbadge{
+      width:34px; height:34px;
+      border-radius: 12px;
+      display:grid; place-items:center;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,77,136,.18);
+    }
+    .status{color:var(--muted); font-size:12px}
+
+    .msgs{
+      padding: 14px;
+      overflow:auto;
+      min-height:0;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+
+    .msg{
+      display:flex;
+      gap:10px;
+      align-items:flex-end;
+      max-width: 92%;
+      animation: pop .24s ease;
+    }
+    @keyframes pop{from{transform: translateY(8px); opacity:0}to{transform: translateY(0); opacity:1}}
+
+    .msg.me{align-self:flex-end; flex-direction:row-reverse;}
+
+    .bubble{
+      padding: 12px 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.07);
+      line-height:1.55;
+      font-size: 14px;
+      position:relative;
+    }
+    .msg.bot .bubble{background: rgba(255,77,136,.12);}
+    .msg.me .bubble{background: rgba(50,213,131,.12);}
+
+    .stamp{font-size: 11px; color: rgba(255,255,255,.70); margin: 0 6px 4px; white-space:nowrap}
+
+    .miniava{
+      width:30px; height:30px;
+      border-radius: 12px;
+      display:grid; place-items:center;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.14);
+      flex: 0 0 auto;
+    }
+
+    .typing{
+      display:inline-flex;
+      gap:6px;
+      align-items:center;
+    }
+    .dot{width:7px; height:7px; border-radius:999px; background: rgba(255,255,255,.75); opacity:.55; animation: blink 1s infinite;}
+    .dot:nth-child(2){animation-delay:.15s}
+    .dot:nth-child(3){animation-delay:.30s}
+    @keyframes blink{0%,100%{opacity:.25; transform: translateY(0)}50%{opacity:1; transform: translateY(-2px)}}
+
+    /* ===== Choices ===== */
+    .choices{
+      padding: 12px 14px;
+      border-top: 1px solid var(--line);
+      background: rgba(0,0,0,.10);
+      display:grid;
+      gap:10px;
+    }
+
+    .choice-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
 
     .btn{
-      border: 1px solid rgba(255,255,255,.22);
-      background: rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.08);
       color: var(--text);
-      padding: 12px 18px;
-      border-radius: 18px;
+      padding: 10px 12px;
+      border-radius: 999px;
       font-weight: 900;
-      cursor: pointer;
-      transition: transform .14s ease, background .14s ease, box-shadow .14s ease;
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
       user-select:none;
-      white-space:nowrap;
+      font-size: 13px;
     }
-    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.16)}
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.12)}
+    .btn.good{border-color: rgba(50,213,131,.35); background: rgba(50,213,131,.14)}
+    .btn.spicy{border-color: rgba(255,155,189,.45); background: rgba(255,155,189,.14)}
+    .btn.danger{border-color: rgba(255,255,255,.22); background: rgba(0,0,0,.18)}
 
-    .btn.yes{
-      border: 1px solid rgba(50,213,131,.40);
-      background: linear-gradient(135deg, rgba(50,213,131,.60), rgba(50,213,131,.28));
-      box-shadow: 0 12px 28px rgba(50,213,131,.18);
-      z-index: 3;
+    .note{color: var(--muted); font-size: 12px; line-height:1.45}
+
+    /* ===== Finale modal ===== */
+    .modal{
+      position:fixed; inset:0;
+      display:none;
+      place-items:center;
+      background: rgba(0,0,0,.55);
+      z-index: 9999;
+      padding: 18px;
+    }
+    .modal .box{
+      width:min(720px, 100%);
+      border-radius: 26px;
+      border:1px solid rgba(255,255,255,.18);
+      background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.08));
+      box-shadow: 0 30px 90px rgba(0,0,0,.45);
+      backdrop-filter: blur(12px);
+      padding: 18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .modal .box:before{
+      content:"";
       position:absolute;
-      left: 50%;
+      inset:-60px;
+      background: radial-gradient(circle at 20% 20%, rgba(255,77,136,.40), transparent 55%),
+                  radial-gradient(circle at 80% 30%, rgba(124,77,255,.35), transparent 55%),
+                  radial-gradient(circle at 50% 90%, rgba(50,213,131,.25), transparent 55%);
+      filter: blur(2px);
+      pointer-events:none;
+    }
+    .modal h2{margin:0 0 8px; font-size: 30px; letter-spacing:-.02em; position:relative}
+    .modal p{margin:0 0 12px; color: var(--muted); line-height:1.6; position:relative}
+
+    .arena{
+      position:relative;
+      width:min(520px, 100%);
+      height: 190px;
+      margin: 10px auto 0;
+      border-radius: 24px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.16);
+      overflow:hidden;
+    }
+
+    .yes{
+      position:absolute;
+      left:50%;
       bottom: 14px;
       transform: translateX(-50%);
+      padding: 12px 18px;
+      border-radius: 18px;
+      font-weight: 1000;
+      border:1px solid rgba(50,213,131,.45);
+      background: linear-gradient(135deg, rgba(50,213,131,.65), rgba(50,213,131,.25));
+      cursor:pointer;
+      color: var(--text);
+      box-shadow: 0 14px 30px rgba(50,213,131,.18);
+      user-select:none;
+      z-index: 3;
     }
 
-    .btn.no{
+    .no{
       position:absolute;
-      left: 52%;
+      left:50%;
       top: 14px;
       transform: translateX(-50%);
-      z-index: 2;
-      border: 1px solid rgba(255,255,255,.18);
+      padding: 12px 18px;
+      border-radius: 18px;
+      font-weight: 1000;
+      border:1px solid rgba(255,255,255,.18);
       background: rgba(0,0,0,.22);
+      cursor:pointer;
+      color: var(--text);
+      user-select:none;
+      z-index: 2;
     }
 
     .toast{
@@ -262,317 +380,475 @@
       opacity:0;
       pointer-events:none;
       transition: opacity .2s ease, transform .2s ease;
-      z-index: 9999;
+      z-index: 10000;
+      white-space:nowrap;
     }
     .toast.show{opacity:1; transform: translateX(-50%) translateY(-2px)}
 
-    .final{display:none; padding: 18px; text-align:center; width:100%;}
-    .final h2{margin:0 0 8px; font-size: 30px; letter-spacing:-.02em}
-    .final p{margin:0 0 14px; color:var(--muted); line-height:1.6}
-    .big{font-size: 62px; line-height:1; margin: 10px 0 0; filter: drop-shadow(0 16px 30px rgba(0,0,0,.25));}
-
-    .footer{
-      padding: 12px 18px 16px;
-      border-top: 1px solid var(--line);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-      color: rgba(255,255,255,.72);
-      font-size: 12px;
-    }
-
-    @media (max-width: 880px){
+    /* ===== Responsive ===== */
+    @media (max-width: 900px){
       body{overflow:auto}
-      .content{grid-template-columns: 1fr;}
-      .panel{min-height:auto}
-      .arena{max-width: 520px; height: 170px;}
+      .app{height:auto; min-height: 92vh}
+      .main{grid-template-columns: 1fr}
+      .side{border-right:none; border-bottom:1px solid var(--line)}
     }
   </style>
 </head>
 <body>
-  <div class="hearts" id="hearts" aria-hidden="true"></div>
+  <div class="fx" id="fx" aria-hidden="true"></div>
 
   <div class="wrap">
-    <div class="card" role="application" aria-label="Valentine proposal">
-      <div class="topbar">
-        <div class="brand">💘 Shivam <span style="opacity:.8">×</span> Anjali</div>
-        <div class="chip" id="chip">Mode: Cute Romantic Chaos</div>
+    <div class="app" role="application" aria-label="Anjali AI Valentine Bot">
+      <div class="top">
+        <div class="brand">🤖💘 Anjali AI <span style="opacity:.7">×</span> Shivam</div>
+        <div class="pill" id="modePill">Mode: Cute • Funny • Slightly Evil (for NO button)</div>
       </div>
 
-      <div class="content">
-        <!-- Left: Funny Love Quiz -->
-        <div class="panel">
-          <div class="bubble">🧪 Cute Love Lab: “100% scientific” quiz</div>
-          <h1>Anjali, quick questions before my BIG question…</h1>
-          <p class="sub">
-            This test is designed by <b>Shivam</b>, reviewed by <b>Google</b> (I searched “how to impress Anjali”)
-            and approved by the <b>Department of Cute Decisions</b>.
-          </p>
-
-          <div class="quiz" id="quiz">
-            <div class="qcard">
-              <b id="qText">Loading question…</b>
-              <div class="opts" id="opts"></div>
-              <div class="reaction" id="reaction">Pick an option 😌</div>
-
-              <div class="progress">
-                <span id="step">Q 1/6</span>
-                <div class="bar" aria-label="progress"><i id="barFill"></i></div>
-                <span id="score">❤️ 0</span>
-              </div>
-            </div>
-
-            <div class="qcard" style="background: rgba(0,0,0,.12)">
-              <b>Bonus Rules</b>
-              <div style="color:var(--muted); font-size:13px; line-height:1.55">
-                • If you pick cute answers, the love score goes up. <br/>
-                • If you pick spicy answers, Shivam blushes. <br/>
-                • If you pick “No”… the NO button later becomes… problematic 😈
-              </div>
+      <div class="main">
+        <aside class="side">
+          <div class="profile">
+            <div class="avatar" aria-hidden="true"><span>👧🏻</span></div>
+            <div class="meta">
+              <div class="name">Anjali AI</div>
+              <div class="desc">Certified: Cute. Skills: Teasing. Specialty: Making Shivam blush.</div>
             </div>
           </div>
-        </div>
 
-        <!-- Right: Proposal -->
-        <div class="panel proposal" id="stage">
-          <div class="ring" aria-hidden="true"><span>💍</span></div>
-          <p class="ask" id="ask">Final question is locked 🔒</p>
-          <p class="hint" id="hint">Finish the quiz to unlock it ✨</p>
-
-          <div class="arena" id="arena" aria-label="button arena">
-            <button class="btn yes" id="yesBtn" disabled style="opacity:.55; cursor:not-allowed">YES 💖</button>
-            <button class="btn no" id="noBtn" disabled style="opacity:.45; cursor:not-allowed">NO 🙃</button>
+          <div class="profile">
+            <div class="avatar" aria-hidden="true"><span>👦🏻</span></div>
+            <div class="meta">
+              <div class="name">Shivam</div>
+              <div class="desc">Occupation: Missing Anjali. Hobbies: Bad jokes, big love, small drama.</div>
+            </div>
           </div>
 
-          <div class="final" id="final">
-            <div class="big">🥰</div>
-            <h2>YAYYY! It’s official 💖</h2>
-            <p>
-              Anjali said YES! Shivam is now <b>100%</b> happier and <b>0%</b> calm.
-              <br/>Now tell me when we’re getting ice cream. 🍦
-            </p>
-            <button class="btn yes" id="confettiBtn" style="position:static; transform:none">Do the celebration again 🎉</button>
+          <div class="stat">
+            <b>Love Score</b>
+            <div class="small">More cute answers = higher score. More sassy answers = faster NO button 😈</div>
+            <div class="meter">
+              <div class="bar"><i id="barFill"></i></div>
+              <div class="score" id="score">❤️ 0</div>
+            </div>
           </div>
-        </div>
+
+          <div class="cards" id="cards">
+            <div class="stat">
+              <b>Mini Quest</b>
+              <div class="small" id="quest">Survive the questions. Unlock the final proposal.</div>
+            </div>
+            <div class="stat">
+              <b>Fun Controls</b>
+              <div class="small">Tap “Chaos Boost” if Anjali tries to say NO too much 😭</div>
+              <div class="side-actions">
+                <button class="ghost" id="boost">⚡ Chaos Boost</button>
+                <button class="ghost" id="reset">🔁 Restart</button>
+              </div>
+            </div>
+            <div class="stat">
+              <b>Disclaimer</b>
+              <div class="small">This page may cause: smiling, blushing, and sudden ice-cream cravings.</div>
+            </div>
+          </div>
+        </aside>
+
+        <section class="chat">
+          <div class="chat-head">
+            <div class="botline">
+              <div class="botbadge">🤖</div>
+              <div>
+                <div style="font-weight:900; line-height:1.2">Anjali AI Girl Bot</div>
+                <div class="status" id="status">Online • typing speed: adorable</div>
+              </div>
+            </div>
+            <div class="pill" id="stepPill">Step 1/12</div>
+          </div>
+
+          <div class="msgs" id="msgs" aria-live="polite"></div>
+
+          <div class="choices" id="choices">
+            <div class="choice-row" id="choiceRow"></div>
+            <div class="note" id="note">Pick a reply. (Yes, this is a test. No, you can’t cheat.)</div>
+          </div>
+        </section>
       </div>
 
-      <div class="footer">
-        <span>Made with 💗 by Shivam</span>
-        <span>Tip: The NO button becomes "faster" if you choose sassy answers 😈</span>
+      <div class="top" style="border-top:1px solid var(--line); border-bottom:none">
+        <div class="pill">Made with 💗 by Shivam</div>
+        <div class="pill">Tip: If you try to reject, the NO button becomes a ninja 🥷</div>
       </div>
     </div>
   </div>
 
-  <div class="toast" id="toast">Nope 😌 Try again!</div>
+  <!-- Finale Modal -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Final Valentine Question">
+    <div class="box">
+      <h2>Final Boss Level 💍</h2>
+      <p id="finalText">Anjali… will you be my Valentine?</p>
+      <div class="arena" id="arena">
+        <button class="yes" id="finalYes">YES 💖</button>
+        <button class="no" id="finalNo">NO 🙃</button>
+      </div>
+      <p style="margin-top:12px" class="note" id="finalHint">Try clicking NO… if you can 😈</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Nice try 😌</div>
 
   <script>
-    // ========= Floating hearts background =========
-    const hearts = document.getElementById('hearts');
-    const colors = ['#ff5c8a', '#ffb3c7', '#ffd166', '#7c4dff', '#6ae4ff'];
-    const makeHeart = () => {
+    // ===== FX background =====
+    const fx = document.getElementById('fx');
+    const heartColors = ['#ff4d88','#ff9bbd','#ffd166','#7c4dff','#6ae4ff','#32d583'];
+
+    function spawnHeart(){
       const h = document.createElement('div');
       h.className = 'heart';
-      const c = colors[Math.floor(Math.random()*colors.length)];
+      const c = heartColors[Math.floor(Math.random()*heartColors.length)];
       const left = Math.random()*100;
       const dur = 7 + Math.random()*8;
-      const s = 0.55 + Math.random()*1.1;
+      const s = 0.55 + Math.random()*1.0;
       const x = (Math.random()*40 - 20) + 'vw';
       h.style.left = left + 'vw';
-      h.style.bottom = (-10 - Math.random()*30) + 'vh';
+      h.style.bottom = (-10 - Math.random()*25) + 'vh';
       h.style.setProperty('--c', c);
       h.style.setProperty('--dur', dur + 's');
       h.style.setProperty('--s', s);
       h.style.setProperty('--x', x);
-      hearts.appendChild(h);
+      fx.appendChild(h);
       setTimeout(()=>h.remove(), dur*1000);
-    };
-    for (let i=0;i<18;i++) setTimeout(makeHeart, i*350);
-    setInterval(makeHeart, 650);
+    }
 
-    // ========= Toast =========
+    function spawnSpark(){
+      const s = document.createElement('div');
+      s.className = 'spark';
+      s.textContent = ['✨','💫','⭐','🌸','💖'][Math.floor(Math.random()*5)];
+      s.style.left = (Math.random()*100) + 'vw';
+      s.style.top = (Math.random()*100) + 'vh';
+      s.style.setProperty('--dur', (2.5 + Math.random()*3.5) + 's');
+      fx.appendChild(s);
+      setTimeout(()=>s.remove(), 6000);
+    }
+
+    for (let i=0;i<16;i++) setTimeout(spawnHeart, i*380);
+    setInterval(spawnHeart, 650);
+    for (let i=0;i<10;i++) setTimeout(spawnSpark, i*450);
+    setInterval(spawnSpark, 1200);
+
+    // ===== UI refs =====
+    const msgs = document.getElementById('msgs');
+    const choiceRow = document.getElementById('choiceRow');
+    const note = document.getElementById('note');
+    const stepPill = document.getElementById('stepPill');
+    const status = document.getElementById('status');
+    const modePill = document.getElementById('modePill');
+    const quest = document.getElementById('quest');
+
+    const barFill = document.getElementById('barFill');
+    const scoreEl = document.getElementById('score');
+
+    const boostBtn = document.getElementById('boost');
+    const resetBtn = document.getElementById('reset');
+
     const toast = document.getElementById('toast');
-    function showToast(msg){
-      toast.textContent = msg;
+
+    const modal = document.getElementById('modal');
+    const arena = document.getElementById('arena');
+    const finalYes = document.getElementById('finalYes');
+    const finalNo = document.getElementById('finalNo');
+    const finalHint = document.getElementById('finalHint');
+    const finalText = document.getElementById('finalText');
+
+    // ===== Helpers =====
+    const clamp = (n,min,max)=>Math.max(min,Math.min(max,n));
+    const rand = (a,b)=>Math.random()*(b-a)+a;
+
+    function showToast(t){
+      toast.textContent = t;
       toast.classList.add('show');
       clearTimeout(showToast._t);
       showToast._t = setTimeout(()=>toast.classList.remove('show'), 950);
     }
 
-    // ========= Quiz engine =========
-    const qText = document.getElementById('qText');
-    const opts = document.getElementById('opts');
-    const reaction = document.getElementById('reaction');
-    const step = document.getElementById('step');
-    const barFill = document.getElementById('barFill');
-    const scoreEl = document.getElementById('score');
-    const chip = document.getElementById('chip');
+    function scrollToBottom(){
+      msgs.scrollTop = msgs.scrollHeight;
+    }
 
-    const ask = document.getElementById('ask');
-    const hint = document.getElementById('hint');
-    const arena = document.getElementById('arena');
-    const yesBtn = document.getElementById('yesBtn');
-    const noBtn = document.getElementById('noBtn');
-    const final = document.getElementById('final');
-    const confettiBtn = document.getElementById('confettiBtn');
+    function bubble(role, text){
+      const wrap = document.createElement('div');
+      wrap.className = 'msg ' + (role==='me' ? 'me' : 'bot');
 
-    const QUESTIONS = [
+      const ava = document.createElement('div');
+      ava.className = 'miniava';
+      ava.textContent = role==='me' ? '👦🏻' : '👧🏻';
+
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      b.textContent = text;
+
+      const stamp = document.createElement('div');
+      stamp.className = 'stamp';
+      stamp.textContent = role==='me' ? 'Shivam' : 'Anjali AI';
+
+      wrap.appendChild(ava);
+      wrap.appendChild(b);
+      wrap.appendChild(stamp);
+      msgs.appendChild(wrap);
+      scrollToBottom();
+    }
+
+    function typing(on){
+      status.textContent = on ? 'Online • typing…' : 'Online • typing speed: adorable';
+      if (!on) return;
+      const wrap = document.createElement('div');
+      wrap.className = 'msg bot';
+      wrap.id = 'typingRow';
+
+      const ava = document.createElement('div');
+      ava.className = 'miniava';
+      ava.textContent = '👧🏻';
+
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      const t = document.createElement('span');
+      t.className = 'typing';
+      t.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
+      b.appendChild(t);
+
+      wrap.appendChild(ava);
+      wrap.appendChild(b);
+      msgs.appendChild(wrap);
+      scrollToBottom();
+    }
+
+    function stopTyping(){
+      status.textContent = 'Online • typing speed: adorable';
+      const row = document.getElementById('typingRow');
+      if (row) row.remove();
+    }
+
+    function setChoices(options){
+      choiceRow.innerHTML = '';
+      options.forEach(o=>{
+        const btn = document.createElement('button');
+        btn.className = `btn ${o.kind||''}`;
+        btn.textContent = o.t;
+        btn.onclick = ()=>choose(o);
+        choiceRow.appendChild(btn);
+      });
+    }
+
+    // ===== Story engine =====
+    let step = 0;
+    let score = 0;
+    let dodgeLevel = 1;
+
+    const STEPS = [
       {
-        q: '1) If Shivam says “I miss you”… what do you do?',
-        options: [
-          {t:'Send a cute selfie 😌', kind:'good', r:'Awww. Shivam.exe has stopped functioning (too cute). +2 ❤️', add:2},
-          {t:'Say “Same” and run away 🏃‍♀️', kind:'spicy', r:'Sassy detected. Shivam is now chasing with chocolates. +1 ❤️', add:1},
-          {t:'Ignore 🤨', kind:'', r:'Error. Internet connection between hearts is unstable. Please retry. +0 ❤️', add:0}
+        bot: 'Hii Shivam 😌 I’m Anjali AI Girl Bot. Before I approve your Valentine request, I need… questions 😈',
+        choices: [
+          {t:'Ok ma’am. I am ready 🫡', kind:'good', me:'Ok ma’am. I am ready 🫡', bot2:'Good boy. First question loading… 💾', add:2},
+          {t:'I’m scared 😭', kind:'spicy', me:'I’m scared 😭', bot2:'Don’t worry. I only bite… chocolates 🍫 (sometimes).', add:1},
+          {t:'Bribe you with ice cream? 🍦', kind:'good', me:'Bribe you with ice cream? 🍦', bot2:'Accepted. You may proceed. Ice cream is non-negotiable.', add:2},
         ]
       },
       {
-        q: '2) Pick our perfect date:',
-        options: [
-          {t:'Ice cream + long walk 🍦', kind:'good', r:'Classic romance. Also, ice cream is mandatory. +2 ❤️', add:2},
-          {t:'Netflix + snacks + cuddle 🌙', kind:'good', r:'Cuddle mode unlocked. Shivam is smiling for 3 business days. +2 ❤️', add:2},
-          {t:'I’ll choose… you choose 😈', kind:'spicy', r:'Plot twist! Anjali is the boss. Shivam accepts. +1 ❤️', add:1}
+        bot: 'Question 1/10: If I say “I miss you”… what do you reply?',
+        choices: [
+          {t:'“Come here, I’ll fix it” 🫂', kind:'good', me:'“Come here, I’ll fix it” 🫂', bot2:'Awww. That’s premium boyfriend energy. +2 ❤️', add:2},
+          {t:'“Same” and run away 🏃‍♂️💨', kind:'spicy', me:'“Same” and run away 🏃‍♂️💨', bot2:'Sassy. I like it. But I will chase you. +1 ❤️', add:1},
+          {t:'Send 47 memes 😂', kind:'good', me:'Send 47 memes 😂', bot2:'Perfect. Love language: memes and chaos. +2 ❤️', add:2},
         ]
       },
       {
-        q: '3) How would you rate Shivam’s jokes?',
-        options: [
-          {t:'So bad… it’s cute 😂', kind:'good', r:'Correct answer. Bad jokes are my love language. +2 ❤️', add:2},
-          {t:'10/10, comedian material 😎', kind:'spicy', r:'Flattery detected. Shivam is now flying. +1 ❤️', add:1},
-          {t:'Please stop 😭', kind:'', r:'Ouch. I’ll reduce jokes to only 47 per day. +0 ❤️', add:0}
+        bot: 'Question 2/10: Choose our date vibe.',
+        choices: [
+          {t:'Walk + ice cream + hand holding 🍦🤝', kind:'good', me:'Walk + ice cream + hand holding 🍦🤝', bot2:'Classic romance. Approved. +2 ❤️', add:2},
+          {t:'Netflix + snacks + cuddle 🌙', kind:'good', me:'Netflix + snacks + cuddle 🌙', bot2:'Cuddle protocol activated. +2 ❤️', add:2},
+          {t:'Surprise me 😈', kind:'spicy', me:'Surprise me 😈', bot2:'Oh? I love surprises. Also I love being the boss. +1 ❤️', add:1, boostNo:true},
         ]
       },
       {
-        q: '4) Would you hold my hand in public?',
-        options: [
-          {t:'Yes, obviously 🤝', kind:'good', r:'Hand-holding: confirmed. Shivam’s heart: melted. +2 ❤️', add:2},
-          {t:'Only if you behave 😌', kind:'spicy', r:'Deal. I will behave… for 3 minutes. +1 ❤️', add:1},
-          {t:'Maybe… if bribed 🍫', kind:'good', r:'Chocolate bribe accepted. +2 ❤️', add:2}
+        bot: 'Question 3/10: How would you describe Shivam’s jokes?',
+        choices: [
+          {t:'So bad… it’s cute 😂', kind:'good', me:'So bad… it’s cute 😂', bot2:'Correct. Bad jokes are a feature, not a bug. +2 ❤️', add:2},
+          {t:'10/10 comedy king 😎', kind:'spicy', me:'10/10 comedy king 😎', bot2:'Flattery detected. I’m blushing. +1 ❤️', add:1},
+          {t:'Please stop 😭', kind:'danger', me:'Please stop 😭', bot2:'Ouch. I will reduce jokes to 3 per hour. +0 ❤️', add:0, boostNo:true}
         ]
       },
       {
-        q: '5) If I get angry, what’s your solution?',
-        options: [
-          {t:'Say sorry + hug 🫂', kind:'good', r:'Perfect. Hug resolves 99% errors. +2 ❤️', add:2},
-          {t:'Feed him snacks 🍟', kind:'good', r:'YES. Hungry Shivam is dangerous. +2 ❤️', add:2},
-          {t:'Roast him until he laughs 😈', kind:'spicy', r:'Anjali chose violence (cute). +1 ❤️', add:1}
+        bot: 'Question 4/10: If I’m upset, what’s your best move?',
+        choices: [
+          {t:'Hug + sorry + listen 🫂', kind:'good', me:'Hug + sorry + listen 🫂', bot2:'That’s mature and cute. +2 ❤️', add:2},
+          {t:'Bring snacks 🍟', kind:'good', me:'Bring snacks 🍟', bot2:'Food therapy? Approved. +2 ❤️', add:2},
+          {t:'Roast me until I laugh 😈', kind:'spicy', me:'Roast me until I laugh 😈', bot2:'Violence… but make it romantic. +1 ❤️', add:1, boostNo:true},
         ]
       },
       {
-        q: '6) Final warm-up: Do you like Shivam?',
-        options: [
-          {t:'Yes ❤️', kind:'good', r:'Correct. Universe approved. +3 ❤️', add:3},
-          {t:'A LOT 😭💘', kind:'good', r:'Shivam is now a happy idiot. +4 ❤️', add:4},
-          {t:'No 🙃', kind:'spicy', r:'Interesting choice… the NO button later will now become… EXTRA dramatic. +0 ❤️', add:0, noBoost:true}
+        bot: 'Question 5/10: Choose a cute nickname for Anjali.',
+        choices: [
+          {t:'“Anju” 🥺', kind:'good', me:'“Anju” 🥺', bot2:'Cute. Tiny heart explosion. +2 ❤️', add:2},
+          {t:'“Boss Lady” 👑', kind:'spicy', me:'“Boss Lady” 👑', bot2:'Correct. I am the boss. +1 ❤️', add:1},
+          {t:'“My Home” 🏡', kind:'good', me:'“My Home” 🏡', bot2:'Okay why is this so sweet??? +3 ❤️', add:3},
+        ]
+      },
+      {
+        bot: 'Question 6/10: If we fight, we…',
+        choices: [
+          {t:'Talk it out calmly 🤝', kind:'good', me:'Talk it out calmly 🤝', bot2:'Green flag. Huge. +2 ❤️', add:2},
+          {t:'Say “sorry” first (even if I’m right) 😭', kind:'good', me:'Say “sorry” first (even if I’m right) 😭', bot2:'This is love… and also bravery. +2 ❤️', add:2},
+          {t:'Send a meme apology 😂', kind:'spicy', me:'Send a meme apology 😂', bot2:'Acceptable. Meme diplomacy works. +1 ❤️', add:1}
+        ]
+      },
+      {
+        bot: 'Question 7/10: Pick a romantic superpower.',
+        choices: [
+          {t:'Teleport to you instantly 🌀', kind:'good', me:'Teleport to you instantly 🌀', bot2:'Instant hugs? YES. +2 ❤️', add:2},
+          {t:'Unlimited chocolates 🍫♾️', kind:'good', me:'Unlimited chocolates 🍫♾️', bot2:'Correct. You understand priorities. +2 ❤️', add:2},
+          {t:'Read your mind 😈', kind:'spicy', me:'Read your mind 😈', bot2:'Nope. Too dangerous. I have secrets. +1 ❤️', add:1, boostNo:true}
+        ]
+      },
+      {
+        bot: 'Question 8/10: One sentence about me?',
+        choices: [
+          {t:'“You’re my peace” 🌙', kind:'good', me:'“You’re my peace” 🌙', bot2:'Aaaa. Sweetness overload. +3 ❤️', add:3},
+          {t:'“You’re my favourite problem” 😈', kind:'spicy', me:'“You’re my favourite problem” 😈', bot2:'Sassy romance. Approved. +1 ❤️', add:1},
+          {t:'“You’re my luck” 🍀', kind:'good', me:'“You’re my luck” 🍀', bot2:'So cute. +2 ❤️', add:2}
+        ]
+      },
+      {
+        bot: 'Question 9/10: Do you hold my hand in public?',
+        choices: [
+          {t:'Yes, proudly 🤝', kind:'good', me:'Yes, proudly 🤝', bot2:'Hand-holding confirmed. +2 ❤️', add:2},
+          {t:'Only if you behave 😌', kind:'spicy', me:'Only if you behave 😌', bot2:'Deal. I’ll behave… for 3 minutes. +1 ❤️', add:1},
+          {t:'If bribed with ice cream 🍦', kind:'good', me:'If bribed with ice cream 🍦', bot2:'Bribe accepted. +2 ❤️', add:2}
+        ]
+      },
+      {
+        bot: 'Question 10/10 (Important): Do you like Shivam?',
+        choices: [
+          {t:'YES ❤️', kind:'good', me:'YES ❤️', bot2:'Correct answer. Universe approved. +3 ❤️', add:3},
+          {t:'A LOT 😭💘', kind:'good', me:'A LOT 😭💘', bot2:'Shivam is now a happy idiot. +4 ❤️', add:4},
+          {t:'No 🙃', kind:'danger', me:'No 🙃', bot2:'Interesting choice… The NO button later will become a ninja. +0 ❤️', add:0, boostNo:true, bigBoost:true}
+        ]
+      },
+      {
+        bot: 'Processing results… 💗',
+        choices: [
+          {t:'Show results 😭', kind:'good', me:'Show results 😭', bot2:'Final verdict: You two are dangerously cute together. Unlocking final boss…', add:0}
         ]
       }
     ];
 
-    let idx = 0;
-    let score = 0;
-    let dodgeLevel = 1; // for NO button
-
-    function render(){
-      const total = QUESTIONS.length;
-      step.textContent = `Q ${idx+1}/${total}`;
-      barFill.style.width = `${Math.round((idx/total)*100)}%`;
+    function updateScore(){
       scoreEl.textContent = `❤️ ${score}`;
-
-      const item = QUESTIONS[idx];
-      qText.textContent = item.q;
-      opts.innerHTML = '';
-
-      item.options.forEach((o) => {
-        const b = document.createElement('button');
-        b.className = `opt ${o.kind||''}`;
-        b.textContent = o.t;
-        b.onclick = () => pick(o);
-        opts.appendChild(b);
-      });
-
-      reaction.textContent = 'Pick an option 😌';
+      const pct = clamp(Math.round((score/24)*100), 0, 100);
+      barFill.style.width = pct + '%';
+      quest.textContent = step < 11 ? `Answering question ${Math.min(step+1,10)}/10…` : 'Final boss unlocked. Don’t panic.';
+      stepPill.textContent = `Step ${Math.min(step+1,12)}/12`;
     }
 
-    function pick(o){
-      score += o.add || 0;
-      scoreEl.textContent = `❤️ ${score}`;
-      reaction.textContent = o.r;
+    function choose(o){
+      // user bubble
+      bubble('me', o.me);
 
-      if (o.noBoost) {
-        dodgeLevel = Math.min(5, dodgeLevel + 2);
-        chip.textContent = `Mode: NO button is now faster (Level ${dodgeLevel})`;
-      } else {
-        // mild escalation
-        if (Math.random() < 0.25) dodgeLevel = Math.min(5, dodgeLevel + 1);
-        chip.textContent = `Mode: Cute Romantic Chaos (NO Level ${dodgeLevel})`;
-      }
+      // scoring + NO button chaos
+      score += (o.add||0);
+      if (o.boostNo) dodgeLevel = clamp(dodgeLevel + (o.bigBoost ? 2 : 1), 1, 5);
+      if (!o.boostNo && Math.random() < 0.20) dodgeLevel = clamp(dodgeLevel+1,1,5);
 
-      // Next question after short delay
-      setTimeout(() => {
-        idx += 1;
-        const total = QUESTIONS.length;
-        barFill.style.width = `${Math.round((idx/total)*100)}%`;
+      modePill.textContent = `Mode: Cute • Funny • NO Level ${dodgeLevel}`;
+      updateScore();
 
-        if (idx >= total) {
-          unlockFinal();
-        } else {
-          render();
+      // bot typing then reply
+      setChoices([]);
+      note.textContent = 'Anjali AI is thinking… (judging a little)';
+      typing(true);
+
+      setTimeout(()=>{
+        stopTyping();
+        bubble('bot', o.bot2);
+
+        // next step
+        step++;
+        if (step >= STEPS.length) step = STEPS.length-1;
+
+        // special transition to finale
+        if (step === 11) {
+          setTimeout(openFinale, 700);
+          note.textContent = 'Final boss incoming…';
+          setChoices([{t:'I’m ready 😭', kind:'good', me:'I’m ready 😭', bot2:'Let’s goooo.', add:0}]);
+          return;
         }
-      }, 820);
+
+        loadStep();
+      }, 650 + Math.random()*350);
     }
 
-    function unlockFinal(){
-      qText.textContent = '✅ Quiz complete!';
-      opts.innerHTML = '';
-      reaction.textContent = `Love score = ${score}. Shivam is officially in love (as if he wasn’t already).`; 
-      barFill.style.width = '100%';
+    function loadStep(){
+      updateScore();
+      const s = STEPS[step];
+      typing(true);
+      setChoices([]);
+      note.textContent = 'Wait… she’s typing 😳';
 
-      ask.textContent = 'Will you be my Valentine, Anjali?';
-      hint.textContent = 'Now you can choose… but can you really choose NO? 😈';
-
-      yesBtn.disabled = false;
-      noBtn.disabled = false;
-      yesBtn.style.opacity = '1';
-      yesBtn.style.cursor = 'pointer';
-      noBtn.style.opacity = '1';
-      noBtn.style.cursor = 'pointer';
-
-      // place NO button inside arena
-      placeNoButton(true);
-      showToast('Final question unlocked 💖');
+      setTimeout(()=>{
+        stopTyping();
+        bubble('bot', s.bot);
+        setChoices(s.choices);
+        note.textContent = 'Pick a reply (choose wisely 😈)';
+      }, 650 + Math.random()*450);
     }
 
-    render();
+    // Start conversation
+    bubble('bot', '💌 Booting up Anjali AI…');
+    setTimeout(()=>{
+      bubble('bot', 'System note: Shivam is smiling already.');
+      loadStep();
+    }, 500);
 
-    // ========= No button “escape” logic (fixed layout) =========
+    // ===== Buttons: Boost + reset =====
+    boostBtn.addEventListener('click', ()=>{
+      dodgeLevel = clamp(dodgeLevel+1,1,5);
+      modePill.textContent = `Mode: Cute • Funny • NO Level ${dodgeLevel}`;
+      showToast('Chaos Boost activated ⚡');
+    });
+
+    resetBtn.addEventListener('click', ()=>{
+      // quick reset (soft)
+      location.reload();
+    });
+
+    // ===== Finale modal + ninja NO button =====
     let lastMove = 0;
-    function rand(min,max){return Math.random()*(max-min)+min}
 
-    function placeNoButton(force=false){
-      if (noBtn.disabled) return;
+    function openFinale(){
+      modal.style.display = 'grid';
+      finalText.textContent = `Anjali… will you be my Valentine?`; 
+      finalHint.textContent = 'Try clicking NO… if you can 😈';
+      placeNo(true);
+      showToast('Final Boss Level Unlocked 💍');
+    }
+
+    function placeNo(force=false){
       const now = Date.now();
       if (!force && now - lastMove < 85) return;
       lastMove = now;
 
-      const rect = arena.getBoundingClientRect();
-      const bw = noBtn.offsetWidth;
-      const bh = noBtn.offsetHeight;
-
+      const r = arena.getBoundingClientRect();
+      const bw = finalNo.offsetWidth;
+      const bh = finalNo.offsetHeight;
       const pad = 10;
-      const maxX = rect.width - bw - pad;
-      const maxY = rect.height - bh - pad - 54; // keep away from YES area
+      const maxX = r.width - bw - pad;
+      const maxY = r.height - bh - pad - 56; // keep away from YES
 
       const x = rand(pad, Math.max(pad, maxX));
       const y = rand(pad, Math.max(pad, maxY));
 
-      // position relative to arena
-      noBtn.style.left = x + 'px';
-      noBtn.style.top  = y + 'px';
-      noBtn.style.transform = `rotate(${rand(-10,10)}deg)`;
+      finalNo.style.left = x + 'px';
+      finalNo.style.top  = y + 'px';
+      finalNo.style.transform = `rotate(${rand(-10,10)}deg)`;
     }
 
-    function escalate(){
-      dodgeLevel = Math.min(5, dodgeLevel + 1);
+    function escalateNo(){
       const lines = [
         'NO button: “I’m shy 🙈”',
         'NO button: “Catch me if you can 😼”',
@@ -580,78 +856,71 @@
         'NO button: “Error 404: NO not found 😌”',
         'NO button: “Stop chasing me, choose YES 😭”'
       ];
-      hint.textContent = lines[dodgeLevel-1];
+      finalHint.textContent = lines[dodgeLevel-1];
     }
 
-    const dodge = (e) => {
-      if (noBtn.disabled) return;
-      placeNoButton();
-      if (Math.random() < (0.25 + dodgeLevel*0.08)) escalate();
-      if (dodgeLevel >= 4 && Math.random() < 0.30) {
+    function dodge(e){
+      placeNo();
+      if (Math.random() < (0.22 + dodgeLevel*0.10)) {
+        dodgeLevel = clamp(dodgeLevel+1,1,5);
+        modePill.textContent = `Mode: Cute • Funny • NO Level ${dodgeLevel}`;
+        escalateNo();
+      }
+      if (dodgeLevel >= 4 && Math.random() < 0.35) {
         showToast('NOpe. This button is in a relationship with chaos 😈');
       }
       e.preventDefault?.();
-    };
+    }
 
-    noBtn.addEventListener('mouseenter', dodge);
-    noBtn.addEventListener('mousemove', () => {
-      if (noBtn.disabled) return;
-      if (dodgeLevel >= 3) placeNoButton();
-    });
+    finalNo.addEventListener('mouseenter', dodge);
+    finalNo.addEventListener('mousemove', ()=>{ if (dodgeLevel>=3) placeNo(); });
+    finalNo.addEventListener('touchstart', (e)=>{ dodge(e); showToast('Nice try 😌'); }, {passive:false});
+    finalNo.addEventListener('click', (e)=>{ e.preventDefault(); placeNo(true); showToast('Not today 😌'); dodgeLevel=clamp(dodgeLevel+1,1,5); escalateNo(); });
 
-    noBtn.addEventListener('touchstart', (e) => {
-      dodge(e);
-      showToast('Nice try 😌');
-    }, {passive:false});
-
-    noBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      placeNoButton(true);
-      showToast('Not today 😌');
-      escalate();
-    });
-
-    // ========= YES flow + confetti =========
-    function confettiBurst(){
-      const count = 80;
+    // ===== Confetti =====
+    function confetti(){
+      const count = 95;
       for (let i=0;i<count;i++){
         const p = document.createElement('div');
-        p.textContent = ['💖','✨','🎉','💘','🌸','🍫','🧸'][Math.floor(Math.random()*7)];
+        p.textContent = ['💖','✨','🎉','💘','🌸','🍫','🧸','😍'][Math.floor(Math.random()*8)];
         p.style.position = 'fixed';
         p.style.left = (Math.random()*100) + 'vw';
         p.style.top = (-10) + 'vh';
         p.style.fontSize = (14 + Math.random()*22) + 'px';
-        p.style.zIndex = 9999;
+        p.style.zIndex = 10001;
         p.style.transition = 'transform 1.3s ease, opacity 1.3s ease';
         p.style.opacity = '1';
         document.body.appendChild(p);
-        const tx = (Math.random()*60 - 30) + 'vw';
+        const tx = (Math.random()*70 - 35) + 'vw';
         const ty = (Math.random()*90 + 60) + 'vh';
         const rot = (Math.random()*720 - 360);
-        setTimeout(()=>{
-          p.style.transform = `translate(${tx}, ${ty}) rotate(${rot}deg)`;
-          p.style.opacity = '0';
-        }, 10);
+        setTimeout(()=>{ p.style.transform = `translate(${tx}, ${ty}) rotate(${rot}deg)`; p.style.opacity = '0'; }, 10);
         setTimeout(()=>p.remove(), 1400);
       }
     }
 
-    yesBtn.addEventListener('click', () => {
-      if (yesBtn.disabled) return;
-      arena.style.display = 'none';
-      final.style.display = 'block';
-      chip.textContent = 'Status: Valentine Accepted ✅';
-      confettiBurst();
+    finalYes.addEventListener('click', ()=>{
+      confetti();
       showToast('She said YES 💖');
+      finalText.textContent = 'YAYYY! It’s official 💖';
+      finalHint.textContent = 'Anjali said YES! Shivam is now 100% happy and 0% calm. Ice cream time 🍦';
+      // lock NO
+      finalNo.style.display = 'none';
+      finalYes.textContent = 'Celebrate again 🎉';
+      finalYes.onclick = ()=>{ confetti(); showToast('Celebration mode ON 🎉'); };
     });
 
-    confettiBtn.addEventListener('click', () => {
-      confettiBurst();
-      showToast('Celebration mode: ON 🎉');
-    });
+    window.addEventListener('resize', ()=>{ if (modal.style.display==='grid') placeNo(true); });
 
-    // If window resizes, keep NO inside arena
-    window.addEventListener('resize', () => placeNoButton(true));
+    // Keyboard chaos block
+    document.addEventListener('keydown', (e)=>{
+      if (modal.style.display==='grid' && e.key.toLowerCase()==='n'){
+        placeNo(true);
+        showToast('Keyboard shortcut blocked 😌');
+        dodgeLevel = clamp(dodgeLevel+1,1,5);
+        escalateNo();
+      }
+    });
   </script>
 </body>
 </html>
